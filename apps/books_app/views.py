@@ -5,7 +5,9 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 def index(request):
-    return render(request, 'books_app/index.html')
+	if 'user_id' not in request.session:
+		return redirect('/belt_reviewer_app/')
+	return render(request, 'books_app/index.html')
 
 def logout(request):
 	request.session.clear()

@@ -6,8 +6,14 @@ from ..belt_reviewer_app.models import User
 
 # Create your models here.
 
+class Author(models.Model):
+	name = models.CharField(max_length=255)
+	def __str__(self):
+		return 'name {}'.format(self.name)
+
 class Book(models.Model):
     title = models.CharField(max_length=255)
+    author = models.ForeignKey(Author, related_name="books_written")
     Created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     # objects = UserManager()
@@ -15,14 +21,10 @@ class Book(models.Model):
         return 'title: {}'.format(self.title)
 
 class Review(models.Model):
-    reviewed_user = models.ForeignKey(User, related_name="reviewed_book")
-    reviewed_book = models.ForeignKey(Book, related_name="reviewer")
+    reviewer = models.ForeignKey(User, related_name="user_reviews")
+    reviewed_book = models.ForeignKey(Book, related_name="book_reviews")
+    comment = models.CharField(max_length=255)
     rating = models.IntegerField()
     def __str__(self):
-		return 'reviewed_user {}, reviewed_book {}, rating{}'.format(self.reviewed_user, self.reviewed_book, self.rating)
+		return 'reviewed_user {}, reviewed_book {}, comment {}, rating{}'.format(self.reviewer, self.reviewed_book, self.comment, self.rating)
 
-class Author(models.Model):
-	name = models.CharField(max_length=255)
-	wrote_book = models.ForeignKey(Book, related_name="writer")
-	def __str__(self):
-		return 'name {}, wrote_book {}'.format(self.name, self.wrote_book)

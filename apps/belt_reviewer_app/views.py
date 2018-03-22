@@ -22,20 +22,6 @@ def register(request):
 
     return redirect('/books/')
 
-    # errors = User.objects.basic_validator(request.POST)
-    # if len(errors):
-    #     for tag, error in errors.iteritems():
-    #         messages.error(request, error, extra_tags = tag)
-    #     return redirect('/')
-    # else:
-    #     fullname = request.POST['fullname']
-    #     alias = request.POST['alias']
-    #     email = request.POST['email']
-    #     password = bcrypt.hashpw((request.POST['password']).encode(), bcrypt.gensalt())        
-    #     user = User.objects.create(name=fullname, alias=alias, email=email, password=password)
-    #     request.session['user_id'] = user.id
-    #     return redirect('/books/')
-
 def login(request):
     response = User.objects.login_validator(request.POST)
     if response['status'] == True:
