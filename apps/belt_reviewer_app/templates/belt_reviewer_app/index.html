@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Regiestration Form</title>
+    <style>
+        .wrapper {
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 40px;
+        }
+
+        .error {
+            color: red;
+            font-size: 1.2em;
+        }
+
+        .success {
+            color: green;
+            font-size: 1.2em;
+        }
+
+        form {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .right {
+            border-left: 1px solid rgba(red, green, blue, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }} 
+                    {% if message.tags %}
+                        has these tags: {{message.tags }}
+                    {% endif %}</p>
+            {% endfor %}
+        {% endif %}
+        <form action="/register" method="POST" class="form-group right col-xs-6 col-md-4">
+            {% csrf_token %}
+            <h1>Register</h1>
+            Name:<input type="text" name="fullname" class="form-control" required> 
+            Alias:<input type="text" name="alias" class="form-control" required> 
+            Email:<input type="email" name="email" class="form-control"> 
+            Password:<input type="password" name="password" minlength="8" class="form-control"> 
+            Confirm Password:<input type="password" name="confirm_pw" class="form-control">
+            <br>
+            <input type="submit" name="Submit" class="btn btn-info">
+        </form>
+        <form action="/login" method="POST" class="form-group col-xs-6 col-md-4">
+            {% csrf_token %}
+            <h1>Login</h1>
+            Email: <input type="email" name="loginemail" class="form-control"> 
+            Password: <input type="password" name="loginpw" class="form-control">
+            <br>
+            <input type="submit" name="login" value="Login" class="btn btn-info">
+        </form>
+    </div>
+
+</body>
+
+</html>
