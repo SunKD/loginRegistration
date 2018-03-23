@@ -34,6 +34,8 @@ class UserManager(models.Manager):
             errors.append("Password should include contain one upper letter, one lowerletter and number ")
         if postData["password"] != postData["confirm_pw"]:
             errors.append("Passwords do not matched!")
+        if postData["dob"] =="":
+            errors.append("Birthday must be entered!")
 
         if len(errors):
             result['errors'] = errors
@@ -42,7 +44,8 @@ class UserManager(models.Manager):
                 name = postData['fullname'],
                 alias = postData['alias'],
                 email = postData['email'],
-                password = bcrypt.hashpw((postData['password']).encode(), bcrypt.gensalt())
+                password = bcrypt.hashpw((postData['password']).encode(), bcrypt.gensalt()),
+                dob = postData['dob']
             )      
             result['status'] = True
             result['user_id'] = new_user.id
@@ -55,12 +58,15 @@ class UserManager(models.Manager):
         
         errors=[]
         existing = User.objects.filter(email = postData['loginemail'])
-        password = existing[0].password
-        print password
-        if password != None:
-            if bcrypt.checkpw(postData['loginpw'].encode(), password.encode()):
-                errors.append("Password is not matching")
-        elif password == None:
+        if len(existing) < 1:
+            errors.append("User name is not exist! Please register")
+        else:
+            password = existing[0].password
+            if password != None:
+                if bcrypt.checkpw(postData['loginpw'].encode(), password.encode()):
+                    errors.append("Password is not matching")
+
+            elif password == None:
                 errors.append("user name is not matching")        
         
         if len(errors):
@@ -76,9 +82,10 @@ class User(models.Model):
     alias = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
+    dob = models.DateField(auto_now=False, auto_now_add=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = UserManager()
     def __str__(self):
-        return '{}, {}, {}'.format(self.name, self.alias, self.email)
+        return '{}, {}, {}, {}'.format(self.name, self.alias, self.email, self.dob)
     

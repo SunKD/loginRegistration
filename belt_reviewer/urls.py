@@ -17,7 +17,8 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^', include('apps.books_app.urls')),
-    url(r'^', include('apps.belt_reviewer_app.urls')),
+    url(r'^quotes/', include('apps.quotes_app.urls')),
+    url(r'^users/', include('apps.users_app.urls')),
+    url(r'^', include('apps.users_app.urls')),
     url(r'^admin/', admin.site.urls),
 ]
